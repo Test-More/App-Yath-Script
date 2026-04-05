@@ -1,0 +1,125 @@
+name: testsuite
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+
+  #
+  # A basic and simple test run
+  #
+
+  ubuntu:
+    name: "simple testrun"
+    env:
+      PERL_USE_UNSAFE_INC: 0
+      AUTHOR_TESTING: 0
+      AUTOMATED_TESTING: 1
+      RELEASE_TESTING: 1
+      PERL_CARTON_PATH: $GITHUB_WORKSPACE/local
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - run: perl -V
+      - name: Get cache week number
+        id: cache-week
+        run: echo "week=$(date +%Y-W%V)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        with:
+          path: local
+          key: cpan-ubuntu-${{ hashFiles('cpanfile', 'cpanfile.ci') }}-${{ steps.cache-week.outputs.week }}
+          restore-keys: |
+            cpan-ubuntu-${{ hashFiles('cpanfile', 'cpanfile.ci') }}-
+            cpan-ubuntu-
+      - name: install dependencies from cpanfile.ci
+        uses: perl-actions/install-with-cpm@v1
+        with:
+          cpanfile: ".github/cpanfile.ci"
+      - name: install dependencies from cpanfile
+        uses: perl-actions/install-with-cpm@v1
+        with:
+          cpanfile: "cpanfile"
+      - run: perl Makefile.PL
+      - run: make
+      - run: make test
+
+  #
+  # Determine which Perl versions to test
+  #
+
+  perl-versions:
+    runs-on: ubuntu-latest
+    name: List Perl versions
+    outputs:
+      perl-versions: ${{ steps.action.outputs.perl-versions }}
+    steps:
+      - id: action
+        uses: perl-actions/perl-versions@v2
+        with:
+          since-perl: v5.14
+          until-perl: "5.40"
+          with-devel: false
+
+  #
+  # Only trigger the matrix if the testsuite pass above
+  #
+
+  perl:
+    name: "linux Perl ${{ matrix.perl-version }}"
+    needs: [ubuntu, perl-versions]
+    runs-on: ubuntu-latest
+
+    env:
+       PERL_USE_UNSAFE_INC: 0
+       AUTHOR_TESTING: 0
+       AUTOMATED_TESTING: 1
+       RELEASE_TESTING: 1
+       PERL_CARTON_PATH: $GITHUB_WORKSPACE/local
+       PERL5LIB: ${{ github.workspace }}/local/lib/perl5
+       T2_NO_FORK: 1
+
+    continue-on-error: true
+
+    strategy:
+      fail-fast: false
+      matrix:
+        perl-version: ${{ fromJson(needs.perl-versions.outputs.perl-versions) }}
+
+    container:
+      image: perldocker/perl-tester:${{ matrix.perl-version }}
+
+    steps:
+      - uses: actions/checkout@v5
+      - run: perl -V
+      - name: Get cache week number
+        id: cache-week
+        run: echo "week=$(date +%Y-W%V)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        with:
+          path: local
+          key: cpan-perl-${{ matrix.perl-version }}-${{ hashFiles('cpanfile', '.github/cpanfile.ci') }}-${{ steps.cache-week.outputs.week }}
+          restore-keys: |
+            cpan-perl-${{ matrix.perl-version }}-${{ hashFiles('cpanfile', '.github/cpanfile.ci') }}-
+            cpan-perl-${{ matrix.perl-version }}-
+      - name: install dependencies from cpanfile.ci
+        uses: perl-actions/install-with-cpm@v1
+        with:
+          cpanfile: ".github/cpanfile.ci"
+          global: true
+          sudo: false
+      - name: install dependencies from cpanfile
+        uses: perl-actions/install-with-cpm@v1
+        with:
+          cpanfile: "cpanfile"
+          global: true
+          sudo: false
+      - run: perl Makefile.PL
+      - run: make
+      - run: make test
