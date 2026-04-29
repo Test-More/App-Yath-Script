@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-our $VERSION = '2.000016';
+our $VERSION = '2.000017';
 
 BEGIN {
     return if $^C;
