@@ -117,7 +117,7 @@ All exports are optional (via [Importer](https://metacpan.org/pod/Importer)).
 # SOURCE
 
 The source code repository for Test2-Harness can be found at
-[http://github.com/Test-More/Test2-Harness/](http://github.com/Test-More/Test2-Harness/).
+[http://github.com/Test-More/App-Yath-Script/](http://github.com/Test-More/App-Yath-Script/).
 
 # MAINTAINERS
 

@@ -552,7 +552,7 @@ Converts a module name (e.g., C<App::Yath::Script>) to a file path
 =head1 SOURCE
 
 The source code repository for Test2-Harness can be found at
-L<http://github.com/Test-More/Test2-Harness/>.
+L<http://github.com/Test-More/App-Yath-Script/>.
 
 =head1 MAINTAINERS
 
