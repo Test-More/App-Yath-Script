@@ -121,11 +121,11 @@ The source code repository for Test2-Harness can be found at
 
 # MAINTAINERS
 
-- Chad Granum <exodist@cpan.org>
+- Chad Granum <exodist7@gmail.com>
 
 # AUTHORS
 
-- Chad Granum <exodist@cpan.org>
+- Chad Granum <exodist7@gmail.com>
 
 # COPYRIGHT
 
