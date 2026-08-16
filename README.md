@@ -95,6 +95,8 @@ All exports are optional (via [Importer](https://metacpan.org/pod/Importer)).
 
     Re-executes the current script with the given arguments. Sets the
     `T2_HARNESS_INCLUDES` environment variable to preserve the current `@INC`.
+    Only paths are preserved; `@INC` hooks cannot cross an `exec` and are
+    reinstalled in the new process by whatever added them.
 
 - $clean\_path = clean\_path($path)
 - $clean\_path = clean\_path($path, $absolute)

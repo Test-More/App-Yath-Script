@@ -100,7 +100,8 @@ EXPORTS
 
       Re-executes the current script with the given arguments. Sets the
       T2_HARNESS_INCLUDES environment variable to preserve the current
-      @INC.
+      @INC. Only paths are preserved; @INC hooks cannot cross an exec and
+      are reinstalled in the new process by whatever added them.
 
     $clean_path = clean_path($path)
 
