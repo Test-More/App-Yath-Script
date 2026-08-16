@@ -61,3 +61,8 @@ test-logs/
 xxx
 .immiscible-test.lock
 data
+
+# Agent working state
+/worktrees/
+/TEST_TIMING.md
+scratch
