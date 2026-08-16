@@ -22,7 +22,7 @@ our @EXPORT_OK = (
     },
 );
 
-our $VERSION = '2.000017';
+our $VERSION = '2.000018';
 
 our ($SCRIPT, $MOD);
 

@@ -4,7 +4,7 @@ use warnings;
 
 use Getopt::Yath;
 
-our $VERSION = '2.000017';
+our $VERSION = '2.000018';
 
 my @BEGIN_ARGS;
 
