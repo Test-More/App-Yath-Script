@@ -49,7 +49,11 @@ subdirectory layout. No per-file origin header, and `audit-test-layout` is not
 run here.
 
 Tests that predate this declaration stay where they are and are not
-reclassified or moved. The scheme governs newly authored tests.
+reclassified or moved. The scheme governs newly authored test files: a new
+one goes under `t/AI/`, while a new subtest added to a file already in `t/`
+stays with the file it extends. Splitting a subtest away from the harness
+setup it depends on would cost a duplicated copy of that setup and buy
+nothing.
 
 Reason: chosen by the owner over categories-plus-origin-headers. The existing
 suite is four files and rewriting their headers and paths would have churned
