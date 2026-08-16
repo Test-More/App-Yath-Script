@@ -21,7 +21,7 @@ if ($ENV{AUTOMATED_TESTING}) {
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Script initialization and utility functions for Test2::Harness",
-  "AUTHOR" => "Chad Granum <exodist\@cpan.org>",
+  "AUTHOR" => "Chad Granum <exodist7\@gmail.com>",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
   },
